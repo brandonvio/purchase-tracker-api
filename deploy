@@ -1,0 +1,11 @@
+﻿dotnet build PurchaseTracker.csproj
+dotnet publish -c Release PurchaseTracker.csproj 
+
+aws ecr get-login-password --region us-west-2 | docker login --username AWS --password-stdin 612370013845.dkr.ecr.us-west-2.amazonaws.com/budget-tracker-api
+
+docker build -t purchase-tracker-api -f Dockerfile .
+
+docker tag budget-tracker-api:latest 612370013845.dkr.ecr.us-west-2.amazonaws.com/budget-tracker-api:latest
+docker push 612370013845.dkr.ecr.us-west-2.amazonaws.com/budget-tracker-api:latest
+
+aws ecs update-service --cluster rythm-ecs-cluster --service budget-tracker --force-new-deployment
