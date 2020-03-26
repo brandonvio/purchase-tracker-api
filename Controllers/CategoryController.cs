@@ -25,7 +25,10 @@ namespace PurchaseTracker.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<CategoryModel>>> GetCategories()
         {
-            return await _context.Categories.ToListAsync();
+            return await _context
+                .Categories
+                .OrderBy(p => p.CategoryName)
+                .ToListAsync();
         }
 
         // GET: api/Category/5
